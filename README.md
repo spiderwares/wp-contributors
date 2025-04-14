@@ -1,122 +1,125 @@
-# Contributors Metabox for WordPress Posts
+# WP Contributors
+
+WordPress plugin to add a Contributors metabox and display contributors on posts.
+
+---
 
 ## Index
-- [Introduction](#introduction)
-- [Features](#features)
+- [Overview](#overview)
 - [Installation](#installation)
-- [Admin Side Functionality](#admin-side-functionality)
-- [Public Side Functionality](#public-side-functionality)
-- [Available Hooks](#available-hooks)
-- [Template File](#template-file)
+- [Browser Support](#browser-support)
+- [Usage Instructions](#usage-instructions)
+- [Hooks](#hooks)
+- [Filters](#filters)
+- [Actions](#actions)
+- [Unit Testing](#unit-testing)
+- [Minimum Requirements](#minimum-requirements)
 - [License](#license)
 
 ---
 
-## Introduction
+## Overview
 
-This plugin adds a **Contributors** feature to WordPress posts. Admins, editors, and authors can select multiple contributors (authors) for a post. These contributors are displayed at the end of each post on the front-end with their names, avatars, and links to their author archive pages.
+**WP Contributors** plugin enhances WordPress posts by allowing the selection of multiple contributors from registered users.  
+Contributors are displayed on the post front-end along with their Gravatars and links to their author pages.
 
----
-
-## Features
-- Adds a "Contributors" metabox to the post editor.
-- Lists all WordPress authors with checkboxes.
-- Saves selected contributors when a post is saved.
-- Displays selected contributors on the front-end after post content.
-- Shows contributors' names, Gravatars, and links to their author pages.
-- Fully extendable with provided hooks and filters.
+- Select multiple authors/contributors while editing a post.
+- Automatically show contributors at the bottom of the post.
+- Fully customizable and extendable via WordPress hooks and filters.
+- Designed following WordPress coding standards.
 
 ---
 
 ## Installation
 
-1. **Via Composer**
+### 1. Clone and Install Dependencies
 
 ```bash
-composer require your-vendor/contributors-metabox
+git clone https://github.com/spiderwares/wp-contributors.git
+cd wp-contributors
+composer install
 ```
 
-2. **Manual Installation**
+### 2. Upload and Activate
 
-- Download the plugin zip.
-- Upload and extract it in the `/wp-content/plugins/` directory.
-- Activate the plugin via WordPress Admin > Plugins.
+- Upload the `wp-contributors` directory to the `/wp-content/plugins/` directory.
+- Activate the **WP Contributors** plugin through the WordPress admin dashboard under **Plugins**.
 
 ---
 
-## Admin Side Functionality
+## Browser Support
 
-- A new metabox labeled **"Contributors"** is added to the WordPress post editor.
-- It lists all users with the `author`, `editor`, or `administrator` role.
-- Users can check/uncheck multiple contributors per post.
-- Upon saving the post, selected contributors' IDs are saved as post meta.
+All major modern browsers are supported as the plugin relies on WordPress admin and standard HTML output.
 
-**Hook for fetching authors:**
-```php
-$authors = apply_filters(
-	'wpcb_get_metabox_contributors',
-	get_users(
-		array(
-			'who'     => 'authors',
-			'orderby' => 'display_name',
-			'order'   => 'ASC',
-		)
-	)
-);
-```
-
-**Hook for modifying contributor IDs before saving:**
-```php
-$contributor_ids = apply_filters( 'wpcb_pre_save_contributors_ids', $contributor_ids );
-```
+| Chrome | Firefox | Safari | Edge | Opera |
+|:------:|:-------:|:------:|:----:|:-----:|
+|  ✅    |   ✅    |   ✅   | ✅   |  ✅   |
 
 ---
 
-## Public Side Functionality
+## Usage Instructions
 
-- Using `the_content` filter, a Contributors box is appended at the end of each post.
-- This box displays contributors with their Gravatar images and clickable names linking to their author archive pages.
+1. Go to the **Post Editor** screen (Add New or Edit Post).
+2. Locate the **Contributors** metabox on the right or bottom of the editor screen.
+3. Select one or multiple users from the list by checking the checkboxes.
+4. Save or update the post.
 
-**Hook for fetching saved contributor IDs:**
-```php
-$saved_contributors = apply_filters( 'wpcb_get_contributors_ids', $saved_contributors, $post_id );
-```
-
-**Hook for customizing the template path:**
-```php
-$template_path = apply_filters( 'wpcb_contributors_list_tempalte', WPCB_PATH . '/templates/contributors.php' );
-```
+On the front-end, the contributors selected for the post will be displayed at the bottom of the post content along with their Gravatars and links to their author archive pages.
 
 ---
 
-## Available Hooks
+## Hooks
 
-| Hook Name                        | Context     | Description                                                              |
-|----------------------------------|-------------|--------------------------------------------------------------------------|
-| `wpcb_get_metabox_contributors`  | Admin       | Modify the list of users shown in the Contributors metabox.              |
-| `wpcb_pre_save_contributors_ids` | Admin       | Modify contributor IDs before saving to the post meta.                  |
-| `wpcb_get_contributors_ids`      | Public      | Modify retrieved contributors' IDs before rendering on front-end.       |
-| `wpcb_contributors_list_tempalte`| Public      | Override the template file used for displaying contributors on frontend.|
+### Filters
+
+| Filter | Description | Parameters |
+|:------|:-------------|:-----------|
+| `wpcb_get_metabox_contributors` | Modify the list of users displayed in the Contributors metabox. | `$authors` (array) |
+| `wpcb_pre_save_contributors_ids` | Modify contributor IDs before saving them into post meta. | `$contributor_ids` (array) |
+| `wpcb_get_contributors_ids` | Modify retrieved contributor IDs for displaying on frontend. | `$saved_contributors` (array), `$post_id` (int) |
+| `wpcb_contributors_list_tempalte` | Override the template path used to render the Contributors box on the front-end. | `$template_path` (string) |
 
 ---
 
-## Template File
+### Actions
 
-The default frontend Contributors box is loaded from:
+| Action | Description | Parameters |
+|:-------|:------------|:------------|
+| `wpcb_after_contributors_saved` | Fires after contributors are saved in post meta. | `$post_id` (int), `$contributor_ids` (array) |
 
+---
+
+## Unit Testing
+
+### Running Tests
+
+Ensure you install development dependencies:
+```bash
+composer install
 ```
-/templates/contributors.php
+
+Run PHPUnit tests:
+
+```bash
+vendor/bin/phpunit
 ```
 
-You can override this by using the `wpcb_contributors_list_tempalte` filter to specify a custom path.
+### Code Quality - WordPress Coding Standards (WPCS)
+
+Check coding standards:
+
+```bash
+vendor/bin/phpcs --standard=WordPress .
+```
+---
+
+## Minimum Requirements
+
+- WordPress >= 6.5
+- PHP >= 8.2
 
 ---
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
----
-
-✨ Happy contributing!
-
