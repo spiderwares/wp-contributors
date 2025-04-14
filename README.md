@@ -101,7 +101,7 @@ composer install
 Run PHPUnit tests:
 
 ```bash
-vendor/bin/phpunit
+vendor/bin/phpunit [PATH]
 ```
 
 ### Code Quality - WordPress Coding Standards (WPCS)
@@ -109,7 +109,7 @@ vendor/bin/phpunit
 Check coding standards:
 
 ```bash
-vendor/bin/phpcs --standard=WordPress .
+vendor/bin/phpcs --standard=WordPress [PATH]
 ```
 ---
 
