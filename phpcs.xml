@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress Custom" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+
+    <description>Custom WordPress Coding Standards - Excluding filename check and test folders</description>
+
+    <!-- Set the base standard -->
+    <rule ref="WordPress-Extra">
+        <!-- Exclude filename related rules globally -->
+        <exclude name="WordPress.Files.FileName" />
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+    </rule>
+
+    <!-- Add additional WordPress-Core rules -->
+    <rule ref="WordPress-Core">
+        <exclude name="Universal.Operators.DisallowShortTernary" />
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
+    </rule>
+
+    <!-- Include WordPress-Docs standard -->
+    <rule ref="WordPress-Docs" />
+
+    <!-- Exclude specific folders/files globally -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
+    <exclude-pattern>.*</exclude-pattern> <!-- Exclude hidden files/folders starting with . -->
+
+    <!-- Only check PHP files -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Show sniff progress -->
+    <arg value="p"/>
+
+    <!-- Start scanning from current directory -->
+    <file>.</file>
+
+</ruleset>
