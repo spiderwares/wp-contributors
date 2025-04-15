@@ -100,7 +100,7 @@ class ContributorsMetabox {
 		
 		// Sanitize and save the contributors.
 		if ( isset( $_POST['post_contributors'] ) && is_array( $_POST['post_contributors'] ) ) {
-			$contributor_ids = array_map( 'intval', $_POST['post_contributors'] );
+			$contributor_ids = apply_filters( 'wpcb_pre_save_contributors_ids', array_map( 'intval', $_POST['post_contributors'] ) );
 			update_post_meta( $post_id, '_post_contributors', $contributor_ids );
 		} else {
 			// If no contributors are selected, delete the meta.
