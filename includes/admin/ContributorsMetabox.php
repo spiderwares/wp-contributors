@@ -98,8 +98,6 @@ class ContributorsMetabox {
 			return;
 		}
 		
-		$contributor_ids = apply_filters( 'wpcb_pre_save_contributors_ids', $contributor_ids );
-
 		// Sanitize and save the contributors.
 		if ( isset( $_POST['post_contributors'] ) && is_array( $_POST['post_contributors'] ) ) {
 			$contributor_ids = array_map( 'intval', $_POST['post_contributors'] );
